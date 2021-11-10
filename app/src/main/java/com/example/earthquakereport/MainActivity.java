@@ -3,6 +3,7 @@ package com.example.earthquakereport;
 import androidx.appcompat.app.AppCompatActivity;
 
 import android.os.Bundle;
+import android.view.View;
 import android.widget.ArrayAdapter;
 import android.widget.ListView;
 
@@ -18,7 +19,7 @@ public class MainActivity extends AppCompatActivity {
         setContentView(R.layout.activity_main);
 
         // Create a fake list of earthquake locations.
-        ArrayList<String> earthQuakes = new ArrayList<>();
+        ArrayList<EarthQuakeModel> earthQuakes = new ArrayList<>();
         earthQuakes.add("San Franscisco");
         earthQuakes.add("London");
         earthQuakes.add("Tokyo");
@@ -28,6 +29,7 @@ public class MainActivity extends AppCompatActivity {
         earthQuakes.add("Paris");
 
         // Find a reference to the {@link ListView} in the layout
+        EarthQuakeAdapter adapter = new EarthQuakeAdapter(this, earthQuakes);
         ListView earthQuaekeListView = (ListView) findViewById(R.id.list);
 
         // Create a new {@link ArrayAdapter} of earthquakes
