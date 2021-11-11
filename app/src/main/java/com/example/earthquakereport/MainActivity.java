@@ -4,8 +4,10 @@ import androidx.appcompat.app.AppCompatActivity;
 
 import android.os.Bundle;
 import android.view.View;
+import android.widget.AdapterView;
 import android.widget.ArrayAdapter;
 import android.widget.ListView;
+import android.widget.Toast;
 
 import java.util.ArrayList;
 
@@ -18,28 +20,37 @@ public class MainActivity extends AppCompatActivity {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main);
 
+
         // Create a fake list of earthquake locations.
         ArrayList<EarthQuakeModel> earthQuakes = new ArrayList<>();
-        earthQuakes.add("San Franscisco");
-        earthQuakes.add("London");
-        earthQuakes.add("Tokyo");
-        earthQuakes.add("Mexico City");
-        earthQuakes.add("Moscow");
-        earthQuakes.add("Rio De Jeniero");
-        earthQuakes.add("Paris");
+        earthQuakes.add(new EarthQuakeModel("newyork", "USA","12.12.21" ));
+        earthQuakes.add(new EarthQuakeModel("London", "USA","12.12.21" ));
+        earthQuakes.add(new EarthQuakeModel("Tokyo", "USA","12.12.21" ));
+        earthQuakes.add(new EarthQuakeModel("Mexico City", "USA","12.12.21" ));
+        earthQuakes.add(new EarthQuakeModel("Moscow", "USA","12.12.21" ));
+        earthQuakes.add(new EarthQuakeModel("Rio De Jeniero", "USA","12.12.21" ));
+        earthQuakes.add(new EarthQuakeModel("Paris", "USA","12.12.21" ));
 
         // Find a reference to the {@link ListView} in the layout
-
-        ArrayList<EarthQuakeModel> arraylistQuake = new ArrayList<>();
-        ListView listView = (ListView) findViewById(R.id.list);
 
 
         // Create a new {@link ArrayAdapter} of earthquakes
         EarthQuakeAdapter adapter = new EarthQuakeAdapter(this, earthQuakes);
+        ListView listView = (ListView) findViewById(R.id.list);
 
         // Set the adapter on the {@link ListView}
         listView.setAdapter(adapter);
         // so the list can be populated in the user interface
+
+        listView.setOnItemClickListener(new AdapterView.OnItemClickListener() {
+            @Override
+            public void onItemClick(AdapterView<?> parent, View view, int position, long id) {
+                EarthQuakeModel earthQuakeModel = earthQuakes.get(position);
+                Toast.makeText(MainActivity.this, "item click", Toast.LENGTH_SHORT).show();
+            }
+        });
+
+
 
 
 

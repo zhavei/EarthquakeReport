@@ -19,11 +19,24 @@ public class EarthQuakeAdapter extends ArrayAdapter<EarthQuakeModel> {
         super(context, 0, earthQuake);
     }
 
+    private static class ViewHolder {
+        TextView textViewMag, textViewLocation, textViewDate;
+
+        public ViewHolder(View convertView){
+            textViewMag = convertView.findViewById(R.id.tv_magnitude);
+            textViewLocation = convertView.findViewById(R.id.tv_location);
+            textViewDate = convertView.findViewById(R.id.tv_date);
+        }
+    }
+
     @NonNull
     @Override
     public View getView(int position, @Nullable View convertView, @NonNull ViewGroup parent) {
+
+        EarthQuakeModel currentPosition = getItem(position);
         View itemView = convertView;
         ViewHolder viewHolder;
+
 
         if (itemView == null){
             itemView = LayoutInflater.from(getContext()).inflate(R.layout.list_item_layout, parent, false);
@@ -33,7 +46,6 @@ public class EarthQuakeAdapter extends ArrayAdapter<EarthQuakeModel> {
             viewHolder = (ViewHolder) itemView.getTag();
         }
 
-        EarthQuakeModel currentPosition = getItem(position);
         viewHolder.textViewMag.setText(currentPosition.getMagnitude());
         viewHolder.textViewLocation.setText(currentPosition.getLocation());
         viewHolder.textViewDate.setText(currentPosition.getDate());
@@ -41,13 +53,5 @@ public class EarthQuakeAdapter extends ArrayAdapter<EarthQuakeModel> {
         return itemView;
     }
 
-    private class ViewHolder {
-        TextView textViewMag, textViewLocation, textViewDate;
 
-        public ViewHolder(View convertView){
-            textViewMag = convertView.findViewById(R.id.tv_magnitude);
-            textViewMag = convertView.findViewById(R.id.tv_location);
-            textViewMag = convertView.findViewById(R.id.tv_date);
-        }
-    }
 }
