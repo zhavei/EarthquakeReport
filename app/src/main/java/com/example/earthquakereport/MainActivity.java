@@ -22,14 +22,8 @@ public class MainActivity extends AppCompatActivity {
 
 
         // Create a fake list of earthquake locations.
-        ArrayList<EarthQuakeModel> earthQuakes = new ArrayList<>();
-        earthQuakes.add(new EarthQuakeModel("newyork", "USA","12.12.21" ));
-        earthQuakes.add(new EarthQuakeModel("London", "USA","12.12.21" ));
-        earthQuakes.add(new EarthQuakeModel("Tokyo", "USA","12.12.21" ));
-        earthQuakes.add(new EarthQuakeModel("Mexico City", "USA","12.12.21" ));
-        earthQuakes.add(new EarthQuakeModel("Moscow", "USA","12.12.21" ));
-        earthQuakes.add(new EarthQuakeModel("Rio De Jeniero", "USA","12.12.21" ));
-        earthQuakes.add(new EarthQuakeModel("Paris", "USA","12.12.21" ));
+        ArrayList<EarthQuakeModel> earthQuakes = QueryUtils.extractEarthquakes();
+
 
         // Find a reference to the {@link ListView} in the layout
 
