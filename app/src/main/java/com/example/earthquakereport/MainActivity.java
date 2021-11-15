@@ -24,9 +24,7 @@ public class MainActivity extends AppCompatActivity {
         // Create a fake list of earthquake locations.
         ArrayList<EarthQuakeModel> earthQuakes = QueryUtils.extractEarthquakes();
 
-
         // Find a reference to the {@link ListView} in the layout
-
 
         // Create a new {@link ArrayAdapter} of earthquakes
         EarthQuakeAdapter adapter = new EarthQuakeAdapter(this, earthQuakes);
