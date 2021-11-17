@@ -93,7 +93,7 @@ public class EarthQuakeAdapter extends ArrayAdapter<EarthQuakeModel> {
         viewHolder.textViewLocation.setText(primaryLocation);
 
         //set colors for magnitude
-        GradientDrawable magnitudeCircle = (GradientDrawable) convertView.getBackground();
+        GradientDrawable magnitudeCircle = (GradientDrawable) viewHolder.textViewMag.getBackground();
         int magnitudeColoors = getMagnitudeColors(currentPosition.getMagnitude());
         magnitudeCircle.setColor(magnitudeColoors);
 
