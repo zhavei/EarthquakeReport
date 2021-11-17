@@ -1,6 +1,7 @@
 package com.example.earthquakereport;
 
 import android.content.Context;
+import android.graphics.drawable.GradientDrawable;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -9,7 +10,9 @@ import android.widget.TextView;
 
 import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
+import androidx.core.content.ContextCompat;
 
+import java.text.DecimalFormat;
 import java.text.SimpleDateFormat;
 import java.util.ArrayList;
 import java.util.Date;
@@ -17,6 +20,7 @@ import java.util.Date;
 public class EarthQuakeAdapter extends ArrayAdapter<EarthQuakeModel> {
 
     private static final String LOCATION_SEPARATOR = "of";
+
 
     public EarthQuakeAdapter( Context context, ArrayList<EarthQuakeModel> earthQuake) {
         super(context, 0, earthQuake);
@@ -42,10 +46,6 @@ public class EarthQuakeAdapter extends ArrayAdapter<EarthQuakeModel> {
         View itemView = convertView;
         ViewHolder viewHolder;
 
-        //indentify for split string
-        String primaryLocation;
-        String locationOffset;
-
         //viewHolder Patern
         if (itemView == null) {
             itemView = LayoutInflater.from(getContext()).inflate(R.layout.list_item_layout, parent, false);
@@ -56,7 +56,10 @@ public class EarthQuakeAdapter extends ArrayAdapter<EarthQuakeModel> {
         }
 
         //inflate to textview
-        viewHolder.textViewMag.setText(currentPosition.getMagnitude());
+
+        String formattedMag = formatMagnitude(currentPosition.getMagnitude());
+        viewHolder.textViewMag.setText(formattedMag);
+
         viewHolder.textViewLocation.setText(currentPosition.getLocation());
 
         //get dateobject from position
@@ -71,7 +74,10 @@ public class EarthQuakeAdapter extends ArrayAdapter<EarthQuakeModel> {
         // Display the time of the current earthquake in that TextView
         viewHolder.textViewTime.setText(formattedTime);
 
-        //split string
+        //indentify for split string
+        String primaryLocation;
+        String locationOffset;
+        //split string location
         String originalLocation = currentPosition.getLocation();
         if (originalLocation.contains(LOCATION_SEPARATOR)){
             String [] parts = originalLocation.split(LOCATION_SEPARATOR);
@@ -86,7 +92,58 @@ public class EarthQuakeAdapter extends ArrayAdapter<EarthQuakeModel> {
         viewHolder.textViewoffsetLocation.setText(locationOffset);
         viewHolder.textViewLocation.setText(primaryLocation);
 
+        //set colors for magnitude
+        GradientDrawable magnitudeCircle = (GradientDrawable) convertView.getBackground();
+        int magnitudeColoors = getMagnitudeColors(currentPosition.getMagnitude());
+        magnitudeCircle.setColor(magnitudeColoors);
+
         return itemView;
+    }
+
+    private int getMagnitudeColors(Double magnitude) {
+        int magnitudeColorsResourceId;
+        int magnitudeFloor = (int) Math.floor(magnitude);
+        switch (magnitudeFloor){
+            case 0:
+            case 1:
+                magnitudeColorsResourceId = R.color.magnitude1;
+                break;
+            case 2:
+                magnitudeColorsResourceId = R.color.magnitude2;
+                break;
+            case 3:
+                magnitudeColorsResourceId = R.color.magnitude3;
+                break;
+            case 4:
+                magnitudeColorsResourceId = R.color.magnitude4;
+                break;
+            case 5:
+                magnitudeColorsResourceId = R.color.magnitude5;
+                break;
+            case 6:
+                magnitudeColorsResourceId = R.color.magnitude6;
+                break;
+            case 7:
+                magnitudeColorsResourceId = R.color.magnitude7;
+                break;
+            case 8:
+                magnitudeColorsResourceId = R.color.magnitude8;
+                break;
+            case 9:
+                magnitudeColorsResourceId = R.color.magnitude9;
+                break;
+            default:
+                magnitudeColorsResourceId = R.color.magnitude10plus;
+                break;
+
+        }
+        return ContextCompat.getColor(getContext(), magnitudeColorsResourceId);
+    }
+
+    //method format double for Magnitude/
+    private String formatMagnitude(Double magnitude) {
+        DecimalFormat magFormat = new DecimalFormat("0.0");
+        return magFormat.format(magnitude);
     }
 
     /**

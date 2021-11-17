@@ -2,12 +2,14 @@ package com.example.earthquakereport;
 
 public class EarthQuakeModel {
 
-private String magnitude;
+private Double magnitude;
 private String location;
 private String date;
 private Long longTime;
 
-    public String getMagnitude() {
+
+
+    public Double getMagnitude() {
         return magnitude;
     }
 
@@ -23,7 +25,7 @@ private Long longTime;
         return date;
     }
 
-    public EarthQuakeModel(String magnitude, String location, String date, Long longTime) {
+    public EarthQuakeModel(Double magnitude, String location, String date, Long longTime) {
         this.magnitude = magnitude;
         this.location = location;
         this.date = date;
