@@ -2,10 +2,13 @@ package com.example.earthquakereport;
 
 import androidx.appcompat.app.AppCompatActivity;
 
+import android.content.Intent;
+import android.net.Uri;
 import android.os.Bundle;
 import android.view.View;
 import android.widget.AdapterView;
 import android.widget.ArrayAdapter;
+import android.widget.Button;
 import android.widget.ListView;
 import android.widget.Toast;
 
@@ -20,7 +23,6 @@ public class MainActivity extends AppCompatActivity {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main);
 
-
         // Create a fake list of earthquake locations.
         ArrayList<EarthQuakeModel> earthQuakes = QueryUtils.extractEarthquakes();
 
@@ -29,6 +31,7 @@ public class MainActivity extends AppCompatActivity {
         // Create a new {@link ArrayAdapter} of earthquakes
         EarthQuakeAdapter adapter = new EarthQuakeAdapter(this, earthQuakes);
         ListView listView = (ListView) findViewById(R.id.list);
+
 
         // Set the adapter on the {@link ListView}
         listView.setAdapter(adapter);
@@ -39,12 +42,23 @@ public class MainActivity extends AppCompatActivity {
             public void onItemClick(AdapterView<?> parent, View view, int position, long id) {
                 EarthQuakeModel earthQuakeModel = earthQuakes.get(position);
                 Toast.makeText(MainActivity.this, "item click", Toast.LENGTH_SHORT).show();
+                Uri earthQuakeUri = Uri.parse(earthQuakeModel.getUrl());
+
+                Intent webIntent = new Intent(Intent.ACTION_VIEW, earthQuakeUri);
+                startActivity(webIntent);
+
+                imageClickToIntent();
+
+
             }
         });
 
+    }
 
+    private void imageClickToIntent() {
 
-
+        View view = (View) findViewById(R.id.view_intent);
 
     }
+
 }

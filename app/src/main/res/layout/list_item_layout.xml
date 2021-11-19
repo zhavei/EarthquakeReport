@@ -80,5 +80,12 @@
 
     </LinearLayout>
 
+    <View
+        android:id="@+id/view_intent"
+        android:background="@drawable/ic_baseline_login_24"
+        android:layout_width="24dp"
+        android:layout_height="24dp"
+        android:layout_gravity="center_vertical"
+        android:layout_marginStart="16dp"/>
 
 </LinearLayout>

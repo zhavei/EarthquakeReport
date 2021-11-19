@@ -6,6 +6,7 @@ private Double magnitude;
 private String location;
 private String date;
 private Long longTime;
+private String url;
 
 
 
@@ -25,11 +26,16 @@ private Long longTime;
         return date;
     }
 
-    public EarthQuakeModel(Double magnitude, String location, String date, Long longTime) {
+    public String getUrl() {
+        return url;
+    }
+
+    public EarthQuakeModel(Double magnitude, String location, String date, Long longTime, String url) {
         this.magnitude = magnitude;
         this.location = location;
         this.date = date;
         this.longTime = longTime;
+        this.url = url;
     }
 
 }
