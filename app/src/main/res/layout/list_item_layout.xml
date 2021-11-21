@@ -80,12 +80,13 @@
 
     </LinearLayout>
 
-    <View
-        android:id="@+id/view_intent"
-        android:background="@drawable/ic_baseline_login_24"
-        android:layout_width="24dp"
-        android:layout_height="24dp"
+    <com.example.earthquakereport.ClickAbleImage
+        android:id="@+id/view_to_intent"
+        android:layout_width="35dp"
+        android:layout_height="match_parent"
         android:layout_gravity="center_vertical"
-        android:layout_marginStart="16dp"/>
+        android:layout_marginStart="16dp"
+        android:adjustViewBounds="true"
+        android:src="@drawable/earthquake" />
 
 </LinearLayout>

@@ -2,15 +2,10 @@ package com.example.earthquakereport;
 
 import androidx.appcompat.app.AppCompatActivity;
 
-import android.content.Intent;
-import android.net.Uri;
 import android.os.Bundle;
 import android.view.View;
 import android.widget.AdapterView;
-import android.widget.ArrayAdapter;
-import android.widget.Button;
 import android.widget.ListView;
-import android.widget.Toast;
 
 import java.util.ArrayList;
 
@@ -30,35 +25,28 @@ public class MainActivity extends AppCompatActivity {
 
         // Create a new {@link ArrayAdapter} of earthquakes
         EarthQuakeAdapter adapter = new EarthQuakeAdapter(this, earthQuakes);
-        ListView listView = (ListView) findViewById(R.id.list);
+        ListView listView = (ListView) findViewById(R.id.list_in_activity_main);
 
 
         // Set the adapter on the {@link ListView}
         listView.setAdapter(adapter);
+
+        
         // so the list can be populated in the user interface
-
-        listView.setOnItemClickListener(new AdapterView.OnItemClickListener() {
-            @Override
-            public void onItemClick(AdapterView<?> parent, View view, int position, long id) {
-                EarthQuakeModel earthQuakeModel = earthQuakes.get(position);
-                Toast.makeText(MainActivity.this, "item click", Toast.LENGTH_SHORT).show();
-                Uri earthQuakeUri = Uri.parse(earthQuakeModel.getUrl());
-
-                Intent webIntent = new Intent(Intent.ACTION_VIEW, earthQuakeUri);
-                startActivity(webIntent);
-
-                imageClickToIntent();
-
-
-            }
-        });
+//        listView.setOnItemClickListener(new AdapterView.OnItemClickListener() {
+//            @Override
+//            public void onItemClick(AdapterView<?> parent, View view, int position, long id) {
+//                EarthQuakeModel earthQuakeModel = earthQuakes.get(position);
+//                Toast.makeText(MainActivity.this, "item click", Toast.LENGTH_SHORT).show();
+//                Uri earthQuakeUri = Uri.parse(earthQuakeModel.getUrl());
+//
+//                Intent webIntent = new Intent(Intent.ACTION_VIEW, earthQuakeUri);
+//                startActivity(webIntent);
+//
+//            }
+//        });
 
     }
 
-    private void imageClickToIntent() {
-
-        View view = (View) findViewById(R.id.view_intent);
-
-    }
 
 }

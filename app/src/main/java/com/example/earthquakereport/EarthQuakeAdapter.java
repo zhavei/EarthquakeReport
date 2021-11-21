@@ -1,13 +1,16 @@
 package com.example.earthquakereport;
 
 import android.content.Context;
+import android.content.Intent;
 import android.graphics.drawable.GradientDrawable;
+import android.net.Uri;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.ArrayAdapter;
-import android.widget.Button;
+import android.widget.ImageView;
 import android.widget.TextView;
+import android.widget.Toast;
 
 import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
@@ -22,13 +25,13 @@ public class EarthQuakeAdapter extends ArrayAdapter<EarthQuakeModel> {
 
     private static final String LOCATION_SEPARATOR = "of";
 
-
     public EarthQuakeAdapter( Context context, ArrayList<EarthQuakeModel> earthQuake) {
         super(context, 0, earthQuake);
     }
 
     private static class ViewHolder {
         TextView textViewMag, textViewLocation, textViewDate, textViewTime, textViewoffsetLocation;
+        ImageView viewClick;
 
         public ViewHolder(View convertView){
             textViewMag = convertView.findViewById(R.id.tv_magnitude);
@@ -36,6 +39,8 @@ public class EarthQuakeAdapter extends ArrayAdapter<EarthQuakeModel> {
             textViewLocation = convertView.findViewById(R.id.tv_location);
             textViewDate = convertView.findViewById(R.id.tv_date);
             textViewTime = convertView.findViewById(R.id.tv_time);
+
+            viewClick = convertView.findViewById(R.id.view_to_intent);
         }
     }
 
@@ -98,7 +103,17 @@ public class EarthQuakeAdapter extends ArrayAdapter<EarthQuakeModel> {
         int magnitudeColoors = getMagnitudeColors(currentPosition.getMagnitude());
         magnitudeCircle.setColor(magnitudeColoors);
 
-        //button onClick
+        //view Icon onClick
+        viewHolder.viewClick.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                Toast.makeText(getContext(), "Open Browser", Toast.LENGTH_SHORT).show();
+
+                Uri earthQuakeUri = Uri.parse(currentPosition.getUrl());
+                Intent webIntent = new Intent(Intent.ACTION_VIEW, earthQuakeUri);
+                getContext().startActivity(webIntent);
+            }
+        });
 
         return itemView;
     }
