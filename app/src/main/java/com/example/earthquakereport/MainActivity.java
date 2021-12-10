@@ -2,9 +2,8 @@ package com.example.earthquakereport;
 
 import androidx.appcompat.app.AppCompatActivity;
 
+import android.os.AsyncTask;
 import android.os.Bundle;
-import android.view.View;
-import android.widget.AdapterView;
 import android.widget.ListView;
 
 import java.util.ArrayList;
@@ -13,13 +12,18 @@ public class MainActivity extends AppCompatActivity {
 
     public static final String LOG_TAG = MainActivity.class.getName();
 
+    private static final String USGS_REQUEST_URL =
+            "https://earthquake.usgs.gov/fdsnws/event/1/query?format=geojson&starttime=2016-01-01&endtime=2016-05-02&minfelt=50&minmagnitude=5";
+
+
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main);
 
         // Create a fake list of earthquake locations.
-        ArrayList<EarthQuakeModel> earthQuakes = QueryUtils.extractEarthquakes();
+        ArrayList<EarthQuakeModel> earthQuakes = QueryUtils.extractEarthquakes(USGS_REQUEST_URL);
+
 
         // Find a reference to the {@link ListView} in the layout
 
@@ -47,6 +51,29 @@ public class MainActivity extends AppCompatActivity {
 //        });
 
     }
+
+    private class EarthQuakeAsync extends AsyncTask<String, Void, ArrayList<EarthQuakeModel>> {
+
+        @Override
+        protected ArrayList<EarthQuakeModel> doInBackground(String... urls) {
+            if (urls.length < 1 || urls == null){
+                return null;
+            }
+
+            ArrayList<EarthQuakeModel> earthQuakeModel = QueryUtils.fetchEarthquakeData(urls);
+            return earthQuakeModel;
+        }
+
+        @Override
+        protected void onPostExecute(ArrayList<EarthQuakeModel> result) {
+            if (result = null){
+                return;
+            }
+            updateUi(result);
+        }
+    }
+
+
 
 
 }

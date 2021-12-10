@@ -1,9 +1,5 @@
 package com.example.earthquakereport;
 
-import android.view.View;
-
-import com.google.gson.Gson;
-
 public class EarthQuakeModel {
 
 private Double magnitude;
