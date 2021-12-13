@@ -1,19 +1,25 @@
 package com.example.earthquakereport;
 
-import androidx.appcompat.app.AppCompatActivity;
-
 import android.os.AsyncTask;
 import android.os.Bundle;
+import android.util.Log;
 import android.widget.ListView;
+import android.app.LoaderManager;
+import android.app.LoaderManager.LoaderCallbacks;
+import android.content.Loader;
+
+import androidx.appcompat.app.AppCompatActivity;
 
 import java.util.ArrayList;
 
-public class MainActivity extends AppCompatActivity {
+public class MainActivity extends AppCompatActivity implements LoaderCallbacks<ArrayList<EarthQuakeModel>> {
 
-    public static final String LOG_TAG = MainActivity.class.getName();
+    private static final String LOG_TAG = MainActivity.class.getName();
+    private EarthQuakeAdapter mAdapter;
 
     private static final String USGS_REQUEST_URL =
-            "https://earthquake.usgs.gov/fdsnws/event/1/query?format=geojson&starttime=2016-01-01&endtime=2016-05-02&minfelt=50&minmagnitude=5";
+            "https://earthquake.usgs.gov/fdsnws/event/1/query?format=geojson&orderby=time&minmag=3&limit=20";
+    private static final int EARTH_LOADER_ID = 1;
 
 
     @Override
@@ -22,58 +28,75 @@ public class MainActivity extends AppCompatActivity {
         setContentView(R.layout.activity_main);
 
         // Create a fake list of earthquake locations.
-        ArrayList<EarthQuakeModel> earthQuakes = QueryUtils.extractEarthquakes(USGS_REQUEST_URL);
-
-
-        // Find a reference to the {@link ListView} in the layout
-
-        // Create a new {@link ArrayAdapter} of earthquakes
-        EarthQuakeAdapter adapter = new EarthQuakeAdapter(this, earthQuakes);
         ListView listView = (ListView) findViewById(R.id.list_in_activity_main);
+        mAdapter = new EarthQuakeAdapter(this, new ArrayList<EarthQuakeModel>());
 
 
         // Set the adapter on the {@link ListView}
-        listView.setAdapter(adapter);
+        listView.setAdapter(mAdapter);
 
-        
-        // so the list can be populated in the user interface
-//        listView.setOnItemClickListener(new AdapterView.OnItemClickListener() {
-//            @Override
-//            public void onItemClick(AdapterView<?> parent, View view, int position, long id) {
-//                EarthQuakeModel earthQuakeModel = earthQuakes.get(position);
-//                Toast.makeText(MainActivity.this, "item click", Toast.LENGTH_SHORT).show();
-//                Uri earthQuakeUri = Uri.parse(earthQuakeModel.getUrl());
+        LoaderManager loaderManager = getLoaderManager();
+        Log.i(LOG_TAG, "testing on initialeze loader manager");
+        loaderManager.initLoader(EARTH_LOADER_ID, null, this);
+
+//        EarthQuakeAsync task = new EarthQuakeAsync();
+//        task.execute(USGS_REQUEST_URL);
+
+
+    }
+
+    @Override
+    public Loader<ArrayList<EarthQuakeModel>> onCreateLoader(int id, Bundle bundle) {
+        Log.i(LOG_TAG, "testing oncreateLoader Loader method");
+
+        return new EarthquakeLoader(this, USGS_REQUEST_URL);
+
+
+    }
+
+    @Override
+    public void onLoadFinished(Loader<ArrayList<EarthQuakeModel>> loader, ArrayList<EarthQuakeModel> data) {
+        mAdapter.clear();
+
+        if (data == null) {
+            return;
+        } else if (data != null && !data.isEmpty()) {
+            mAdapter.addAll(data);
+        }
+        Log.i(LOG_TAG, "testing onloadFinish update the UI Succefully");
+    }
+
+    @Override
+    public void onLoaderReset(Loader<ArrayList<EarthQuakeModel>> loader) {
+        mAdapter.clear();
+        Log.i(LOG_TAG, "testing resetLoader");
+    }
+
+
+//    private class EarthQuakeAsync extends AsyncTask<String, Void, ArrayList<EarthQuakeModel>> {
 //
-//                Intent webIntent = new Intent(Intent.ACTION_VIEW, earthQuakeUri);
-//                startActivity(webIntent);
-//
+//        @Override
+//        protected ArrayList<EarthQuakeModel> doInBackground(String... urls) {
+//            if (urls.length < 1 || urls[0] == null) {
+//                return null;
 //            }
-//        });
-
-    }
-
-    private class EarthQuakeAsync extends AsyncTask<String, Void, ArrayList<EarthQuakeModel>> {
-
-        @Override
-        protected ArrayList<EarthQuakeModel> doInBackground(String... urls) {
-            if (urls.length < 1 || urls == null){
-                return null;
-            }
-
-            ArrayList<EarthQuakeModel> earthQuakeModel = QueryUtils.fetchEarthquakeData(urls);
-            return earthQuakeModel;
-        }
-
-        @Override
-        protected void onPostExecute(ArrayList<EarthQuakeModel> result) {
-            if (result = null){
-                return;
-            }
-            updateUi(result);
-        }
-    }
-
-
+//
+//            ArrayList<EarthQuakeModel> earthQuakeModelResult = QueryUtils.fetchEarthquakeData(urls[0]);
+//            return earthQuakeModelResult;
+//        }
+//
+//        @Override
+//        protected void onPostExecute(ArrayList<EarthQuakeModel> result) {
+//            mAdapter.clear();
+//
+//            if (result == null) {
+//                return;
+//            } else if (result != null && !result.isEmpty()) {
+//                mAdapter.addAll(result);
+//            }
+//
+//        }
+//    }
 
 
 }

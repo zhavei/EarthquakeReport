@@ -25,7 +25,7 @@ public class EarthQuakeAdapter extends ArrayAdapter<EarthQuakeModel> {
 
     private static final String LOCATION_SEPARATOR = "of";
 
-    public EarthQuakeAdapter( Context context, ArrayList<EarthQuakeModel> earthQuake) {
+    public EarthQuakeAdapter(Context context, ArrayList<EarthQuakeModel> earthQuake) {
         super(context, 0, earthQuake);
     }
 
@@ -33,7 +33,7 @@ public class EarthQuakeAdapter extends ArrayAdapter<EarthQuakeModel> {
         TextView textViewMag, textViewLocation, textViewDate, textViewTime, textViewoffsetLocation;
         ImageView viewClick;
 
-        public ViewHolder(View convertView){
+        public ViewHolder(View convertView) {
             textViewMag = convertView.findViewById(R.id.tv_magnitude);
             textViewoffsetLocation = convertView.findViewById(R.id.tv_location_offset);
             textViewLocation = convertView.findViewById(R.id.tv_location);
@@ -85,8 +85,8 @@ public class EarthQuakeAdapter extends ArrayAdapter<EarthQuakeModel> {
         String locationOffset;
         //split string location
         String originalLocation = currentPosition.getLocation();
-        if (originalLocation.contains(LOCATION_SEPARATOR)){
-            String [] parts = originalLocation.split(LOCATION_SEPARATOR);
+        if (originalLocation.contains(LOCATION_SEPARATOR)) {
+            String[] parts = originalLocation.split(LOCATION_SEPARATOR);
             locationOffset = parts[0] + LOCATION_SEPARATOR;
             primaryLocation = parts[1];
         } else {
@@ -121,7 +121,7 @@ public class EarthQuakeAdapter extends ArrayAdapter<EarthQuakeModel> {
     private int getMagnitudeColors(Double magnitude) {
         int magnitudeColorsResourceId;
         int magnitudeFloor = (int) Math.floor(magnitude);
-        switch (magnitudeFloor){
+        switch (magnitudeFloor) {
             case 0:
             case 1:
                 magnitudeColorsResourceId = R.color.magnitude1;
