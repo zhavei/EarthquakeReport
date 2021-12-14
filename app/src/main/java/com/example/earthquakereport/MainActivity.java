@@ -1,12 +1,13 @@
 package com.example.earthquakereport;
 
-import android.os.AsyncTask;
-import android.os.Bundle;
-import android.util.Log;
-import android.widget.ListView;
 import android.app.LoaderManager;
 import android.app.LoaderManager.LoaderCallbacks;
 import android.content.Loader;
+import android.os.Bundle;
+import android.util.Log;
+import android.view.View;
+import android.widget.ListView;
+import android.widget.TextView;
 
 import androidx.appcompat.app.AppCompatActivity;
 
@@ -16,6 +17,8 @@ public class MainActivity extends AppCompatActivity implements LoaderCallbacks<A
 
     private static final String LOG_TAG = MainActivity.class.getName();
     private EarthQuakeAdapter mAdapter;
+
+    private TextView emptyStateTextview;
 
     private static final String USGS_REQUEST_URL =
             "https://earthquake.usgs.gov/fdsnws/event/1/query?format=geojson&orderby=time&minmag=3&limit=20";
@@ -31,9 +34,12 @@ public class MainActivity extends AppCompatActivity implements LoaderCallbacks<A
         ListView listView = (ListView) findViewById(R.id.list_in_activity_main);
         mAdapter = new EarthQuakeAdapter(this, new ArrayList<EarthQuakeModel>());
 
-
         // Set the adapter on the {@link ListView}
         listView.setAdapter(mAdapter);
+
+        //creta empty state textview
+        emptyStateTextview = (TextView) findViewById(R.id.emptyview_text);
+        listView.setEmptyView(emptyStateTextview);
 
         LoaderManager loaderManager = getLoaderManager();
         Log.i(LOG_TAG, "testing on initialeze loader manager");
@@ -56,14 +62,21 @@ public class MainActivity extends AppCompatActivity implements LoaderCallbacks<A
 
     @Override
     public void onLoadFinished(Loader<ArrayList<EarthQuakeModel>> loader, ArrayList<EarthQuakeModel> data) {
+        //progress bar
+        View loadingProgresBar = findViewById(R.id.progress_bar);
+        loadingProgresBar.setVisibility(View.GONE);
+
+        // Set empty state text to display "No earthquakes found."
+        emptyStateTextview.setText(R.string.no_earthquake);
+        // Clear the adapter of previous earthquake data
         mAdapter.clear();
 
-        if (data == null) {
-            return;
-        } else if (data != null && !data.isEmpty()) {
+        if (data != null && !data.isEmpty()) {
             mAdapter.addAll(data);
         }
+
         Log.i(LOG_TAG, "testing onloadFinish update the UI Succefully");
+
     }
 
     @Override

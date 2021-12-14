@@ -92,7 +92,6 @@ public final class QueryUtils {
             jsonRespone = makeHttpRequest(url);
         } catch (IOException e) {
             Log.e(LOG_TAG, "error closing input stream", e);
-
         }
 
         ArrayList<EarthQuakeModel> quakeModel = extractEarthquakes(jsonRespone);
