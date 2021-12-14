@@ -87,14 +87,16 @@ public class MainActivity extends AppCompatActivity implements LoaderCallbacks<A
             // Otherwise, display error
             mAdapter.clear();
 
-            // First, hide loading indicator so error message will be visible
+            // if thrown to empty state display
             loadingProgresBar = findViewById(R.id.progress_bar);
-            loadingProgresBar.setVisibility(View.GONE);
+            loadingProgresBar.setVisibility(View.VISIBLE);
 
             // Set empty state text to display "No earthquakes found."
             emptyStateTextview.setText(R.string.no_earthquake);
             emptyStateTextview.setVisibility(View.VISIBLE);
+            Log.i(LOG_TAG, "testing empty state called");
         }
+
         if (mSwipeRefreshLayout.isRefreshing()) {
             mSwipeRefreshLayout.setRefreshing(false);
         }
@@ -111,6 +113,7 @@ public class MainActivity extends AppCompatActivity implements LoaderCallbacks<A
 
     @Override
     public void onLoadFinished(Loader<ArrayList<EarthQuakeModel>> loader, ArrayList<EarthQuakeModel> data) {
+        //loading progress_bar first visible on opening
         loadingProgresBar = findViewById(R.id.progress_bar);
         loadingProgresBar.setVisibility(View.GONE);
         // Clear the adapter of previous earthquake data
