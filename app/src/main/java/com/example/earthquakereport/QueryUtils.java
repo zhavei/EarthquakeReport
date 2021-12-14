@@ -89,8 +89,10 @@ public final class QueryUtils {
 
         String jsonRespone = null;
         try {
+            //delay between get fecth
+            Thread.sleep(2000);
             jsonRespone = makeHttpRequest(url);
-        } catch (IOException e) {
+        } catch (IOException | InterruptedException e) {
             Log.e(LOG_TAG, "error closing input stream", e);
         }
 

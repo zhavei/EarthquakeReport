@@ -2,7 +2,10 @@ package com.example.earthquakereport;
 
 import android.app.LoaderManager;
 import android.app.LoaderManager.LoaderCallbacks;
+import android.content.Context;
 import android.content.Loader;
+import android.net.ConnectivityManager;
+import android.net.NetworkInfo;
 import android.os.Bundle;
 import android.util.Log;
 import android.view.View;
@@ -10,6 +13,7 @@ import android.widget.ListView;
 import android.widget.TextView;
 
 import androidx.appcompat.app.AppCompatActivity;
+import androidx.swiperefreshlayout.widget.SwipeRefreshLayout;
 
 import java.util.ArrayList;
 
@@ -19,6 +23,9 @@ public class MainActivity extends AppCompatActivity implements LoaderCallbacks<A
     private EarthQuakeAdapter mAdapter;
 
     private TextView emptyStateTextview;
+    private SwipeRefreshLayout mSwipeRefreshLayout;
+    private View loadingProgresBar;
+
 
     private static final String USGS_REQUEST_URL =
             "https://earthquake.usgs.gov/fdsnws/event/1/query?format=geojson&orderby=time&minmag=3&limit=20";
@@ -41,14 +48,56 @@ public class MainActivity extends AppCompatActivity implements LoaderCallbacks<A
         emptyStateTextview = (TextView) findViewById(R.id.emptyview_text);
         listView.setEmptyView(emptyStateTextview);
 
-        LoaderManager loaderManager = getLoaderManager();
-        Log.i(LOG_TAG, "testing on initialeze loader manager");
-        loaderManager.initLoader(EARTH_LOADER_ID, null, this);
 
+        mSwipeRefreshLayout = (SwipeRefreshLayout) findViewById(R.id.swipe_to_refresh);
+        mSwipeRefreshLayout.setOnRefreshListener(new SwipeRefreshLayout.OnRefreshListener() {
+            @Override
+            public void onRefresh() {
+
+                getAnEarthquakeDataSwipe();
+            }
+        });
+
+        // get your data at the end of the application running.
+        getAnEarthquakeDataSwipe();
 //        EarthQuakeAsync task = new EarthQuakeAsync();
 //        task.execute(USGS_REQUEST_URL);
 
 
+    }
+
+    private void getAnEarthquakeDataSwipe() {
+        // Get a reference to the ConnectivityManager to check state of network connectivity
+        ConnectivityManager connectivityManager = (ConnectivityManager)
+                getSystemService(Context.CONNECTIVITY_SERVICE);
+        // Get details on the currently active default data network
+        NetworkInfo networkInfo = connectivityManager.getActiveNetworkInfo();
+        //if there is a network connectivity, fetchEarthquakeData
+        if (networkInfo != null && networkInfo.isConnected()) {
+
+            // Get a reference to the LoaderManager, in order to interact with loaders.
+            LoaderManager loaderManager = getLoaderManager();
+            Log.i(LOG_TAG, "testing on initialeze loader manager");
+
+            // Initialize the loader. Pass in the int ID constant defined above and pass in null for
+            // the bundle. Pass in this activity for the LoaderCallbacks parameter (which is valid
+            // because this activity implements the LoaderCallbacks interface).
+            loaderManager.initLoader(EARTH_LOADER_ID, null, this);
+        } else {
+            // Otherwise, display error
+            mAdapter.clear();
+
+            // First, hide loading indicator so error message will be visible
+            loadingProgresBar = findViewById(R.id.progress_bar);
+            loadingProgresBar.setVisibility(View.GONE);
+
+            // Set empty state text to display "No earthquakes found."
+            emptyStateTextview.setText(R.string.no_earthquake);
+            emptyStateTextview.setVisibility(View.VISIBLE);
+        }
+        if (mSwipeRefreshLayout.isRefreshing()) {
+            mSwipeRefreshLayout.setRefreshing(false);
+        }
     }
 
     @Override
@@ -62,12 +111,8 @@ public class MainActivity extends AppCompatActivity implements LoaderCallbacks<A
 
     @Override
     public void onLoadFinished(Loader<ArrayList<EarthQuakeModel>> loader, ArrayList<EarthQuakeModel> data) {
-        //progress bar
-        View loadingProgresBar = findViewById(R.id.progress_bar);
+        loadingProgresBar = findViewById(R.id.progress_bar);
         loadingProgresBar.setVisibility(View.GONE);
-
-        // Set empty state text to display "No earthquakes found."
-        emptyStateTextview.setText(R.string.no_earthquake);
         // Clear the adapter of previous earthquake data
         mAdapter.clear();
 
