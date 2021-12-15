@@ -21,7 +21,6 @@ public class MainActivity extends AppCompatActivity implements LoaderCallbacks<A
 
     private static final String LOG_TAG = MainActivity.class.getName();
     private EarthQuakeAdapter mAdapter;
-
     private TextView emptyStateTextview;
     private SwipeRefreshLayout mSwipeRefreshLayout;
     private View loadingProgresBar;
@@ -67,6 +66,7 @@ public class MainActivity extends AppCompatActivity implements LoaderCallbacks<A
     }
 
     private void getAnEarthquakeDataSwipe() {
+        mAdapter.clear();
         // Get a reference to the ConnectivityManager to check state of network connectivity
         ConnectivityManager connectivityManager = (ConnectivityManager)
                 getSystemService(Context.CONNECTIVITY_SERVICE);
@@ -86,10 +86,12 @@ public class MainActivity extends AppCompatActivity implements LoaderCallbacks<A
         } else {
             // Otherwise, display error
             mAdapter.clear();
+            loadingProgresBar = findViewById(R.id.progress_bar);
+            loadingProgresBar.setVisibility(View.GONE);
 
             // if thrown to empty state display
-            loadingProgresBar = findViewById(R.id.progress_bar);
-            loadingProgresBar.setVisibility(View.VISIBLE);
+//            loadingProgresBar = findViewById(R.id.progress_bar);
+//            loadingProgresBar.setVisibility(View.VISIBLE);
 
             // Set empty state text to display "No earthquakes found."
             emptyStateTextview.setText(R.string.no_earthquake);

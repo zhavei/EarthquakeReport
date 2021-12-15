@@ -1,5 +1,5 @@
 <resources>
     <string name="app_name">EarthquakeReport</string>
     <string name="near_The">Near The</string>
-    <string name="no_earthquake">No earthquakes found, chek your internet, swipe to refresh</string>
+    <string name="no_earthquake">chek your internet, swipe to refresh</string>
 </resources>
