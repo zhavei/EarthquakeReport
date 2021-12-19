@@ -3,15 +3,22 @@ package com.example.earthquakereport;
 import android.app.LoaderManager;
 import android.app.LoaderManager.LoaderCallbacks;
 import android.content.Context;
+import android.content.Intent;
 import android.content.Loader;
+import android.content.SharedPreferences;
 import android.net.ConnectivityManager;
 import android.net.NetworkInfo;
+import android.net.Uri;
 import android.os.Bundle;
+import android.preference.PreferenceManager;
 import android.util.Log;
+import android.view.Menu;
+import android.view.MenuItem;
 import android.view.View;
 import android.widget.ListView;
 import android.widget.TextView;
 
+import androidx.annotation.NonNull;
 import androidx.appcompat.app.AppCompatActivity;
 import androidx.swiperefreshlayout.widget.SwipeRefreshLayout;
 
@@ -26,8 +33,9 @@ public class MainActivity extends AppCompatActivity implements LoaderCallbacks<A
     private View loadingProgresBar;
 
 
-    private static final String USGS_REQUEST_URL =
-            "https://earthquake.usgs.gov/fdsnws/event/1/query?format=geojson&orderby=time&minmag=3&limit=20";
+    //    private static final String USGS_REQUEST_URL =
+//            "https://earthquake.usgs.gov/fdsnws/event/1/query?format=geojson&orderby=time&minmag=3&limit=20";
+    private static final String USGS_REQUEST_URL = "https://earthquake.usgs.gov/fdsnws/event/1/query";
     private static final int EARTH_LOADER_ID = 1;
 
 
@@ -108,6 +116,19 @@ public class MainActivity extends AppCompatActivity implements LoaderCallbacks<A
     public Loader<ArrayList<EarthQuakeModel>> onCreateLoader(int id, Bundle bundle) {
         Log.i(LOG_TAG, "testing oncreateLoader Loader method");
 
+        SharedPreferences prefs = PreferenceManager.getDefaultSharedPreferences(this);
+        String minMagnitude = prefs.getString(
+                getString(R.string.settings_min_magnitude_key),
+                getString(R.string.settings_min_magnitude_default));
+
+        Uri baseUri = Uri.parse(USGS_REQUEST_URL);
+        Uri.Builder uriBuilder = baseUri.buildUpon();
+
+        uriBuilder.appendQueryParameter("format", "geojson");
+        uriBuilder.appendQueryParameter("limit", "10");
+        uriBuilder.appendQueryParameter("minmag",minMagnitude);
+        uriBuilder.appendQueryParameter("orderBy", "time");
+
         return new EarthquakeLoader(this, USGS_REQUEST_URL);
 
 
@@ -162,4 +183,22 @@ public class MainActivity extends AppCompatActivity implements LoaderCallbacks<A
 //    }
 
 
+    @Override
+    public boolean onCreateOptionsMenu(Menu menu) {
+        getMenuInflater().inflate(R.menu.menu, menu);
+        ;
+        return true;
+    }
+
+    @Override
+    public boolean onOptionsItemSelected(@NonNull MenuItem item) {
+
+        int id = item.getItemId();
+        if (id == R.id.action_setting) {
+            Intent intentSetting = new Intent(this, SettingActivity.class);
+            startActivity(intentSetting);
+            return true;
+        }
+        return super.onOptionsItemSelected(item);
+    }
 }
