@@ -12,7 +12,13 @@
         android:roundIcon="@drawable/earthquake"
         android:supportsRtl="true"
         android:theme="@style/Theme.EarthquakeReport">
-        <activity android:name=".SettingActivity"></activity>
+        <activity
+            android:name=".SettingActivity"
+            android:label="@string/Setting_Tille">
+            <meta-data
+                android:name="android.support.PARENT_ACTIVITY"
+                android:value="com.example.earthquakereport.MainActivity" />
+        </activity>
         <activity android:name=".MainActivity">
             <intent-filter>
                 <action android:name="android.intent.action.MAIN" />

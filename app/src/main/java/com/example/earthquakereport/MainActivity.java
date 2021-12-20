@@ -33,7 +33,7 @@ public class MainActivity extends AppCompatActivity implements LoaderCallbacks<A
     private View loadingProgresBar;
 
 
-    //    private static final String USGS_REQUEST_URL =
+//        private static final String USGS_REQUEST_URL =
 //            "https://earthquake.usgs.gov/fdsnws/event/1/query?format=geojson&orderby=time&minmag=3&limit=20";
     private static final String USGS_REQUEST_URL = "https://earthquake.usgs.gov/fdsnws/event/1/query";
     private static final int EARTH_LOADER_ID = 1;
@@ -62,6 +62,7 @@ public class MainActivity extends AppCompatActivity implements LoaderCallbacks<A
             public void onRefresh() {
 
                 getAnEarthquakeDataSwipe();
+                Log.i(LOG_TAG, "testing : screen refresh called");
             }
         });
 
@@ -121,13 +122,17 @@ public class MainActivity extends AppCompatActivity implements LoaderCallbacks<A
                 getString(R.string.settings_min_magnitude_key),
                 getString(R.string.settings_min_magnitude_default));
 
+        String orderBy = prefs.getString(
+                getString(R.string.settings_order_by_key),
+                getString(R.string.settings_order_by_default));
+
         Uri baseUri = Uri.parse(USGS_REQUEST_URL);
         Uri.Builder uriBuilder = baseUri.buildUpon();
 
         uriBuilder.appendQueryParameter("format", "geojson");
         uriBuilder.appendQueryParameter("limit", "10");
-        uriBuilder.appendQueryParameter("minmag",minMagnitude);
-        uriBuilder.appendQueryParameter("orderBy", "time");
+        uriBuilder.appendQueryParameter("minmag", minMagnitude);
+        uriBuilder.appendQueryParameter("orderBy", orderBy);
 
         return new EarthquakeLoader(this, USGS_REQUEST_URL);
 
@@ -185,7 +190,7 @@ public class MainActivity extends AppCompatActivity implements LoaderCallbacks<A
 
     @Override
     public boolean onCreateOptionsMenu(Menu menu) {
-        getMenuInflater().inflate(R.menu.menu, menu);
+        getMenuInflater().inflate(R.menu.main, menu);
         ;
         return true;
     }
