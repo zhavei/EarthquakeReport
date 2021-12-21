@@ -33,8 +33,8 @@ public class MainActivity extends AppCompatActivity implements LoaderCallbacks<A
     private View loadingProgresBar;
 
 
-//        private static final String USGS_REQUEST_URL =
-//            "https://earthquake.usgs.gov/fdsnws/event/1/query?format=geojson&orderby=time&minmag=3&limit=20";
+            private static final String USGS_REQUEST_URL3 =
+            "https://earthquake.usgs.gov/fdsnws/event/1/query?format=geojson&orderby=time&minmag=3&limit=100";
     private static final String USGS_REQUEST_URL = "https://earthquake.usgs.gov/fdsnws/event/1/query";
     private static final int EARTH_LOADER_ID = 1;
 
@@ -68,6 +68,7 @@ public class MainActivity extends AppCompatActivity implements LoaderCallbacks<A
 
         // get your data at the end of the application running.
         getAnEarthquakeDataSwipe();
+
 //        EarthQuakeAsync task = new EarthQuakeAsync();
 //        task.execute(USGS_REQUEST_URL);
 
@@ -75,14 +76,15 @@ public class MainActivity extends AppCompatActivity implements LoaderCallbacks<A
     }
 
     private void getAnEarthquakeDataSwipe() {
-        mAdapter.clear();
+
         // Get a reference to the ConnectivityManager to check state of network connectivity
         ConnectivityManager connectivityManager = (ConnectivityManager)
                 getSystemService(Context.CONNECTIVITY_SERVICE);
         // Get details on the currently active default data network
         NetworkInfo networkInfo = connectivityManager.getActiveNetworkInfo();
+        boolean isConnected = networkInfo != null && networkInfo.isConnectedOrConnecting();
         //if there is a network connectivity, fetchEarthquakeData
-        if (networkInfo != null && networkInfo.isConnected()) {
+        if (isConnected) {
 
             // Get a reference to the LoaderManager, in order to interact with loaders.
             LoaderManager loaderManager = getLoaderManager();
@@ -103,8 +105,8 @@ public class MainActivity extends AppCompatActivity implements LoaderCallbacks<A
 //            loadingProgresBar.setVisibility(View.VISIBLE);
 
             // Set empty state text to display "No earthquakes found."
-            emptyStateTextview.setText(R.string.no_earthquake);
             emptyStateTextview.setVisibility(View.VISIBLE);
+            emptyStateTextview.setText(R.string.no_earthquake);
             Log.i(LOG_TAG, "testing empty state called");
         }
 
@@ -191,7 +193,6 @@ public class MainActivity extends AppCompatActivity implements LoaderCallbacks<A
     @Override
     public boolean onCreateOptionsMenu(Menu menu) {
         getMenuInflater().inflate(R.menu.main, menu);
-        ;
         return true;
     }
 

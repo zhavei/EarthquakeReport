@@ -40,13 +40,13 @@ public final class QueryUtils {
      * @return
      */
     private static ArrayList<EarthQuakeModel> extractEarthquakes(String earthQuakeM) {
+        // Create an empty ArrayList that we can start adding earthquakes to
+        ArrayList<EarthQuakeModel> earthquakes = new ArrayList<>();
 
         if (TextUtils.isEmpty(earthQuakeM)) {
             return null;
         }
 
-        // Create an empty ArrayList that we can start adding earthquakes to
-        ArrayList<EarthQuakeModel> earthquakes = new ArrayList<>();
 
         // Try to parse the SAMPLE_JSON_RESPONSE. If there's a problem with the way the JSON
         // is formatted, a JSONException exception object will be thrown.
@@ -66,8 +66,7 @@ public final class QueryUtils {
                 Long longTime = properties.getLong("time");
                 String url = properties.getString("url");
 
-                EarthQuakeModel earthQuakeModel = new EarthQuakeModel(magnitude, location, date, longTime, url);
-                earthquakes.add(earthQuakeModel);
+                earthquakes.add(new EarthQuakeModel(magnitude, location, date, longTime, url));
 
             }
 
@@ -90,9 +89,9 @@ public final class QueryUtils {
         String jsonRespone = null;
         try {
             //delay between get fecth
-            Thread.sleep(1500);
+//            Thread.sleep(1500);
             jsonRespone = makeHttpRequest(url);
-        } catch (IOException | InterruptedException e) {
+        } catch (IOException e) {
             Log.e(LOG_TAG, "error closing input stream", e);
         }
 
@@ -112,7 +111,7 @@ public final class QueryUtils {
         InputStream inputStream = null;
         try {
             urlConnection = (HttpURLConnection) url.openConnection();
-            urlConnection.setReadTimeout(1000);
+            urlConnection.setReadTimeout(10000);
             urlConnection.setConnectTimeout(15000);
             urlConnection.setRequestMethod("GET");
             urlConnection.connect();
@@ -121,7 +120,7 @@ public final class QueryUtils {
                 inputStream = urlConnection.getInputStream();
                 jsonRespone = readFromStream(inputStream);
             } else {
-                Log.e(LOG_TAG, " Error Respone Code: " + urlConnection.getResponseCode());
+                Log.e(LOG_TAG, " Error Respone Code displayed: " + urlConnection.getResponseCode());
             }
         } catch (IOException e) {
             Log.e(LOG_TAG, " problem retrivieng the earthquake JSON result", e);
