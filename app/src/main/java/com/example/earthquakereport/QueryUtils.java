@@ -60,10 +60,10 @@ public final class QueryUtils {
                 JSONObject currentEarthQuake = earthQuakeArray.getJSONObject(i);
                 JSONObject properties = currentEarthQuake.getJSONObject("properties");
 
-                Double magnitude = properties.getDouble("mag");
+                double magnitude = properties.getDouble("mag");
                 String location = properties.getString("place");
                 String date = properties.getString("time");
-                Long longTime = properties.getLong("time");
+                long longTime = properties.getLong("time");
                 String url = properties.getString("url");
 
                 earthquakes.add(new EarthQuakeModel(magnitude, location, date, longTime, url));

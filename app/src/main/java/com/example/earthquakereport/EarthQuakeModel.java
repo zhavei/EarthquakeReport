@@ -9,6 +9,7 @@ private Long longTime;
 private String url;
 
 
+
     public Double getMagnitude() {
         return magnitude;
     }
