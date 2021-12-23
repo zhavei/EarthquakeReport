@@ -62,11 +62,11 @@ public final class QueryUtils {
 
                 double magnitude = properties.getDouble("mag");
                 String location = properties.getString("place");
-                String date = properties.getString("time");
+//                String date = properties.getString("time");
                 long longTime = properties.getLong("time");
                 String url = properties.getString("url");
 
-                earthquakes.add(new EarthQuakeModel(magnitude, location, date, longTime, url));
+                earthquakes.add(new EarthQuakeModel(magnitude, location, longTime, url));
 
             }
 

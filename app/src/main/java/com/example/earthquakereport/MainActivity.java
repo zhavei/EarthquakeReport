@@ -33,10 +33,11 @@ public class MainActivity extends AppCompatActivity implements LoaderCallbacks<A
     private View loadingProgresBar;
 
 
-            private static final String USGS_REQUEST_URL3 =
+    private static final String USGS_REQUEST_URL3 =
             "https://earthquake.usgs.gov/fdsnws/event/1/query?format=geojson&orderby=time&minmag=3&limit=100";
-    private static final String USGS_REQUEST_URL2 ="https://earthquake.usgs.gov/fdsnws/event/1/query";
-    private static final String USGS_REQUEST_URL ="https://earthquake.usgs.gov/fdsnws/event/1/query?format=geojson";
+    private static final String USGS_REQUEST_URL =
+            "https://earthquake.usgs.gov/fdsnws/event/1/query";
+
     private static final int EARTH_LOADER_ID = 1;
 
 
@@ -137,7 +138,7 @@ public class MainActivity extends AppCompatActivity implements LoaderCallbacks<A
         uriBuilder.appendQueryParameter("minmag", minMagnitude);
         uriBuilder.appendQueryParameter("orderBy", orderBy);
 
-        return new EarthquakeLoader(this, uriBuilder.toString());
+        return new EarthquakeLoader(this, USGS_REQUEST_URL);
 
 
     }

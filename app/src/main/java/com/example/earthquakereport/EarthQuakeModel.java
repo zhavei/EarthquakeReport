@@ -31,10 +31,9 @@ private String url;
     }
 
 
-    public EarthQuakeModel(Double magnitude, String location, String date, Long longTime, String url ) {
+    public EarthQuakeModel(Double magnitude, String location, Long longTime, String url ) {
         this.magnitude = magnitude;
         this.location = location;
-        this.date = date;
         this.longTime = longTime;
         this.url = url;
     }
