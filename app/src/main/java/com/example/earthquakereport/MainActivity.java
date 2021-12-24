@@ -33,10 +33,13 @@ public class MainActivity extends AppCompatActivity implements LoaderCallbacks<A
     private View loadingProgresBar;
 
 
-    private static final String USGS_REQUEST_URL3 =
+    private static final String USGS_REQUEST_URLz =
             "https://earthquake.usgs.gov/fdsnws/event/1/query?format=geojson&orderby=time&minmag=3&limit=100";
     private static final String USGS_REQUEST_URL =
             "https://earthquake.usgs.gov/fdsnws/event/1/query";
+
+    private static final String USGS_REQUEST_URL4 =
+            "https://earthquake.usgs.gov/fdsnws/event/1/query?format=geojson";
 
     private static final int EARTH_LOADER_ID = 1;
 
@@ -57,8 +60,9 @@ public class MainActivity extends AppCompatActivity implements LoaderCallbacks<A
         emptyStateTextview = (TextView) findViewById(R.id.emptyview_text);
         listView.setEmptyView(emptyStateTextview);
 
-
         mSwipeRefreshLayout = (SwipeRefreshLayout) findViewById(R.id.swipe_to_refresh);
+
+
         mSwipeRefreshLayout.setOnRefreshListener(new SwipeRefreshLayout.OnRefreshListener() {
             @Override
             public void onRefresh() {
@@ -98,7 +102,6 @@ public class MainActivity extends AppCompatActivity implements LoaderCallbacks<A
             loaderManager.initLoader(EARTH_LOADER_ID, null, this);
         } else {
             // Otherwise, display error
-            mAdapter.clear();
             loadingProgresBar = findViewById(R.id.progress_bar);
             loadingProgresBar.setVisibility(View.GONE);
 
@@ -107,7 +110,6 @@ public class MainActivity extends AppCompatActivity implements LoaderCallbacks<A
 //            loadingProgresBar.setVisibility(View.VISIBLE);
 
             // Set empty state text to display "No earthquakes found."
-            emptyStateTextview.setVisibility(View.VISIBLE);
             emptyStateTextview.setText(R.string.no_earthquake);
             Log.i(LOG_TAG, "testing empty state called");
         }
@@ -126,21 +128,29 @@ public class MainActivity extends AppCompatActivity implements LoaderCallbacks<A
                 getString(R.string.settings_min_magnitude_key),
                 getString(R.string.settings_min_magnitude_default));
 
+        String maxMagnitude = prefs.getString(
+                getString(R.string.settings_max_magnitude_key),
+                getString(R.string.settings_max_magnitude_default));
+
+        String itemNumber = prefs.getString(
+                getString(R.string.settings_item_number_key),
+                getString(R.string.settings_item_number_default));
+
         String orderBy = prefs.getString(
                 getString(R.string.settings_order_by_key),
                 getString(R.string.settings_order_by_default));
+
 
         Uri baseUri = Uri.parse(USGS_REQUEST_URL);
         Uri.Builder uriBuilder = baseUri.buildUpon();
 
         uriBuilder.appendQueryParameter("format", "geojson");
-        uriBuilder.appendQueryParameter("limit", "10");
+        uriBuilder.appendQueryParameter("limit", itemNumber);
         uriBuilder.appendQueryParameter("minmag", minMagnitude);
+        uriBuilder.appendQueryParameter("maxmag", maxMagnitude);
         uriBuilder.appendQueryParameter("orderBy", orderBy);
 
-        return new EarthquakeLoader(this, USGS_REQUEST_URL);
-
-
+        return new EarthquakeLoader(this, uriBuilder.toString());
     }
 
     @Override
@@ -150,6 +160,7 @@ public class MainActivity extends AppCompatActivity implements LoaderCallbacks<A
         loadingProgresBar.setVisibility(View.GONE);
         // Clear the adapter of previous earthquake data
         mAdapter.clear();
+        emptyStateTextview.setText(R.string.no_earthquake);
 
         if (data != null && !data.isEmpty()) {
             mAdapter.addAll(data);
@@ -195,6 +206,7 @@ public class MainActivity extends AppCompatActivity implements LoaderCallbacks<A
     @Override
     public boolean onCreateOptionsMenu(Menu menu) {
         getMenuInflater().inflate(R.menu.main, menu);
+        ;
         return true;
     }
 

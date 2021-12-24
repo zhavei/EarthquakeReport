@@ -8,6 +8,7 @@ import android.preference.Preference;
 import android.preference.PreferenceFragment;
 import android.preference.PreferenceManager;
 import android.widget.EditText;
+import android.widget.ProgressBar;
 
 import androidx.appcompat.app.AppCompatActivity;
 
@@ -29,6 +30,12 @@ public class SettingActivity extends AppCompatActivity {
 
             Preference minMagnitude = findPreference(getString(R.string.settings_min_magnitude_key));
             bindPreferenceSumamaryToValue(minMagnitude);
+
+            Preference maxMagnitude = findPreference(getString(R.string.settings_max_magnitude_key));
+            bindPreferenceSumamaryToValue(maxMagnitude);
+
+            Preference itemNumber = findPreference(getString(R.string.settings_item_number_key));
+            bindPreferenceSumamaryToValue(itemNumber);
 
             Preference orderBy = findPreference(getString(R.string.settings_order_by_key));
             bindPreferenceSumamaryToValue(orderBy);

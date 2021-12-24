@@ -2,19 +2,17 @@ package com.example.earthquakereport;
 
 public class EarthQuakeModel {
 
-private Double magnitude;
-private String location;
-private String date;
-private Long longTime;
-private String url;
+private double magnitude;
+    private String location;
+    private long longTime;
+    private String url;
 
 
-
-    public Double getMagnitude() {
+    public double getMagnitude() {
         return magnitude;
     }
 
-    public Long getLongTime() {
+    public long getLongTime() {
         return longTime;
     }
 
@@ -22,16 +20,12 @@ private String url;
         return location;
     }
 
-    public String getDate() {
-        return date;
-    }
-
     public String getUrl() {
         return url;
     }
 
 
-    public EarthQuakeModel(Double magnitude, String location, Long longTime, String url ) {
+    public EarthQuakeModel(double magnitude, String location, long longTime, String url ) {
         this.magnitude = magnitude;
         this.location = location;
         this.longTime = longTime;

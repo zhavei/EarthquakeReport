@@ -22,6 +22,11 @@
     <string name="settings_order_by_most_recent_value" translatable="false">time</string>
 
     <!-- Strings For Minimum Magnitude Preference [CHAR LIMIT=30] -->
+    <string name="settings_max_magnitude_label">Maximum Magnitude</string>
+    <string name="settings_max_magnitude_key" translatable="false">max_magnitude</string>
+    <string name="settings_max_magnitude_default" translatable="false">8</string>
+
+    <!-- Strings For Minimum Magnitude Preference [CHAR LIMIT=30] -->
     <string name="settings_item_number_label">Item Number(1-100)</string>
     <string name="settings_item_number_key" translatable="false">item_number</string>
     <string name="settings_item_number_default" translatable="false">20</string>
