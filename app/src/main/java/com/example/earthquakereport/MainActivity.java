@@ -23,8 +23,9 @@ import androidx.appcompat.app.AppCompatActivity;
 import androidx.swiperefreshlayout.widget.SwipeRefreshLayout;
 
 import java.util.ArrayList;
+import java.util.List;
 
-public class MainActivity extends AppCompatActivity implements LoaderCallbacks<ArrayList<EarthQuakeModel>> {
+public class MainActivity extends AppCompatActivity implements LoaderCallbacks<List<EarthQuakeModel>> {
 
     private static final String LOG_TAG = MainActivity.class.getName();
     private EarthQuakeAdapter mAdapter;
@@ -33,12 +34,12 @@ public class MainActivity extends AppCompatActivity implements LoaderCallbacks<A
     private View loadingProgresBar;
 
 
-    private static final String USGS_REQUEST_URLz =
+    private static final String USGS_REQUEST_URL4 =
             "https://earthquake.usgs.gov/fdsnws/event/1/query?format=geojson&orderby=time&minmag=3&limit=100";
     private static final String USGS_REQUEST_URL =
             "https://earthquake.usgs.gov/fdsnws/event/1/query";
 
-    private static final String USGS_REQUEST_URL4 =
+    private static final String USGS_REQUEST_URL2 =
             "https://earthquake.usgs.gov/fdsnws/event/1/query?format=geojson";
 
     private static final int EARTH_LOADER_ID = 1;
@@ -60,28 +61,21 @@ public class MainActivity extends AppCompatActivity implements LoaderCallbacks<A
         emptyStateTextview = (TextView) findViewById(R.id.emptyview_text);
         listView.setEmptyView(emptyStateTextview);
 
-        mSwipeRefreshLayout = (SwipeRefreshLayout) findViewById(R.id.swipe_to_refresh);
-
-
-        mSwipeRefreshLayout.setOnRefreshListener(new SwipeRefreshLayout.OnRefreshListener() {
-            @Override
-            public void onRefresh() {
-
-                getAnEarthquakeDataSwipe();
-                Log.i(LOG_TAG, "testing : screen refresh called");
-            }
-        });
+//        mSwipeRefreshLayout = (SwipeRefreshLayout) findViewById(R.id.swipe_to_refresh);
+//        mSwipeRefreshLayout.setOnRefreshListener(new SwipeRefreshLayout.OnRefreshListener() {
+//            @Override
+//            public void onRefresh() {
+//
+//                getAnEarthquakeDataSwipe();
+//                Log.i(LOG_TAG, "testing : screen refresh called");
+//            }
+//        });
 
         // get your data at the end of the application running.
-        getAnEarthquakeDataSwipe();
+//        getAnEarthquakeDataSwipe();
 
 //        EarthQuakeAsync task = new EarthQuakeAsync();
 //        task.execute(USGS_REQUEST_URL);
-
-
-    }
-
-    private void getAnEarthquakeDataSwipe() {
 
         // Get a reference to the ConnectivityManager to check state of network connectivity
         ConnectivityManager connectivityManager = (ConnectivityManager)
@@ -114,13 +108,14 @@ public class MainActivity extends AppCompatActivity implements LoaderCallbacks<A
             Log.i(LOG_TAG, "testing empty state called");
         }
 
-        if (mSwipeRefreshLayout.isRefreshing()) {
-            mSwipeRefreshLayout.setRefreshing(false);
-        }
+//        if (mSwipeRefreshLayout.isRefreshing()) {
+//            mSwipeRefreshLayout.setRefreshing(false);
+//        }
+
     }
 
     @Override
-    public Loader<ArrayList<EarthQuakeModel>> onCreateLoader(int id, Bundle bundle) {
+    public Loader<List<EarthQuakeModel>> onCreateLoader(int id, Bundle bundle) {
         Log.i(LOG_TAG, "testing oncreateLoader Loader method");
 
         SharedPreferences prefs = PreferenceManager.getDefaultSharedPreferences(this);
@@ -154,7 +149,7 @@ public class MainActivity extends AppCompatActivity implements LoaderCallbacks<A
     }
 
     @Override
-    public void onLoadFinished(Loader<ArrayList<EarthQuakeModel>> loader, ArrayList<EarthQuakeModel> data) {
+    public void onLoadFinished(Loader<List<EarthQuakeModel>> loader, List<EarthQuakeModel> data) {
         //loading progress_bar first visible on opening
         loadingProgresBar = findViewById(R.id.progress_bar);
         loadingProgresBar.setVisibility(View.GONE);
@@ -171,7 +166,7 @@ public class MainActivity extends AppCompatActivity implements LoaderCallbacks<A
     }
 
     @Override
-    public void onLoaderReset(Loader<ArrayList<EarthQuakeModel>> loader) {
+    public void onLoaderReset(Loader<List<EarthQuakeModel>> loader) {
         mAdapter.clear();
         Log.i(LOG_TAG, "testing resetLoader");
     }

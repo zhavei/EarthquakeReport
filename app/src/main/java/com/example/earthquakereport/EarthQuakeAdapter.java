@@ -20,12 +20,14 @@ import java.text.DecimalFormat;
 import java.text.SimpleDateFormat;
 import java.util.ArrayList;
 import java.util.Date;
+import java.util.List;
+import java.util.Locale;
 
 public class EarthQuakeAdapter extends ArrayAdapter<EarthQuakeModel> {
 
     private static final String LOCATION_SEPARATOR = "of";
 
-    public EarthQuakeAdapter(Context context, ArrayList<EarthQuakeModel> earthQuake) {
+    public EarthQuakeAdapter(Context context, List<EarthQuakeModel> earthQuake) {
         super(context, 0, earthQuake);
     }
 
@@ -168,7 +170,7 @@ public class EarthQuakeAdapter extends ArrayAdapter<EarthQuakeModel> {
      * Return the formatted date string (i.e. "Mar 3, 1984") from a Date object.
      */
     private String formatDate(Date dateObject) {
-        SimpleDateFormat dateFormat = new SimpleDateFormat("dd LLLL yyyy");
+        SimpleDateFormat dateFormat = new SimpleDateFormat("dd LLLL yyyy", Locale.ENGLISH);
         return dateFormat.format(dateObject);
     }
 
@@ -176,7 +178,7 @@ public class EarthQuakeAdapter extends ArrayAdapter<EarthQuakeModel> {
      * Return the formatted date string (i.e. "4:30 PM") from a Date object.
      */
     private String formatTime(Date dateObject) {
-        SimpleDateFormat timeFormat = new SimpleDateFormat("h:mm a");
+        SimpleDateFormat timeFormat = new SimpleDateFormat("h:mm a", Locale.ENGLISH);
         return timeFormat.format(dateObject);
     }
 

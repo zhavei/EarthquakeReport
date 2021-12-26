@@ -5,8 +5,9 @@ import android.content.Context;
 import android.util.Log;
 
 import java.util.ArrayList;
+import java.util.List;
 
-public class EarthquakeLoader extends AsyncTaskLoader<ArrayList<EarthQuakeModel>> {
+public class EarthquakeLoader extends AsyncTaskLoader<List<EarthQuakeModel>> {
 
     private static final String LOG_TAG = EarthquakeLoader.class.getName();
 
@@ -24,12 +25,12 @@ public class EarthquakeLoader extends AsyncTaskLoader<ArrayList<EarthQuakeModel>
     }
 
     @Override
-    public ArrayList<EarthQuakeModel> loadInBackground() {
+    public List<EarthQuakeModel> loadInBackground() {
         Log.i(LOG_TAG, "testing Loading In Backgroound Succesfull");
         if (mUrl == null) {
             return null;
         }
-        ArrayList<EarthQuakeModel> earthQuakeModels = QueryUtils.fetchEarthquakeData(mUrl);
+        List<EarthQuakeModel> earthQuakeModels = QueryUtils.fetchEarthquakeData(mUrl);
         return earthQuakeModels;
     }
 }
