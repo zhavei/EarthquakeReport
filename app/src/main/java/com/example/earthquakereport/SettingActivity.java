@@ -7,8 +7,6 @@ import android.preference.ListPreference;
 import android.preference.Preference;
 import android.preference.PreferenceFragment;
 import android.preference.PreferenceManager;
-import android.widget.EditText;
-import android.widget.ProgressBar;
 
 import androidx.appcompat.app.AppCompatActivity;
 
@@ -22,7 +20,8 @@ public class SettingActivity extends AppCompatActivity {
 
     }
 
-    public static class EarthQuakePreferencesFragment extends PreferenceFragment implements Preference.OnPreferenceChangeListener {
+    public static class EarthQuakePreferencesFragment extends
+            PreferenceFragment implements Preference.OnPreferenceChangeListener {
         @Override
         public void onCreate(Bundle savedInstanceState) {
             super.onCreate(savedInstanceState);
@@ -41,6 +40,14 @@ public class SettingActivity extends AppCompatActivity {
             bindPreferenceSumamaryToValue(orderBy);
         }
 
+        private void bindPreferenceSumamaryToValue(Preference preference) {
+            preference.setOnPreferenceChangeListener(this);
+            SharedPreferences preferences = PreferenceManager.getDefaultSharedPreferences
+                    (preference.getContext());
+            String preferenceString = preferences.getString(preference.getKey(), "");
+            onPreferenceChange(preference, preferenceString);
+        }
+
         @Override
         public boolean onPreferenceChange(Preference preference, Object newValue) {
             String stringValue = newValue.toString();
@@ -52,7 +59,7 @@ public class SettingActivity extends AppCompatActivity {
                     preference.setSummary(labels[prefIndex]);
                 }
             } else if (preference instanceof EditTextPreference) {
-                if (preference.getKey().equals(getString(R.string.settings_item_number_key))) {
+                if (preference.getKey() == getString(R.string.settings_item_number_key)) {
                     if (Integer.parseInt(stringValue) > 0 && Integer.parseInt(stringValue) <= 100)
                         preference.setSummary(stringValue);
                     else if (Integer.parseInt((stringValue)) <= 0)
@@ -63,13 +70,6 @@ public class SettingActivity extends AppCompatActivity {
                     preference.setSummary(stringValue);
             }
             return true;
-        }
-
-        private void bindPreferenceSumamaryToValue(Preference preference) {
-            preference.setOnPreferenceChangeListener(this);
-            SharedPreferences preferences = PreferenceManager.getDefaultSharedPreferences(preference.getContext());
-            String preferenceString = preferences.getString(preference.getKey(), "");
-            onPreferenceChange(preference, preferenceString);
         }
     }
 }

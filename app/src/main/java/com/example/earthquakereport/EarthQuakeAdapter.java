@@ -1,5 +1,6 @@
 package com.example.earthquakereport;
 
+import android.app.Activity;
 import android.content.Context;
 import android.content.Intent;
 import android.graphics.drawable.GradientDrawable;
@@ -27,7 +28,7 @@ public class EarthQuakeAdapter extends ArrayAdapter<EarthQuakeModel> {
 
     private static final String LOCATION_SEPARATOR = "of";
 
-    public EarthQuakeAdapter(Context context, List<EarthQuakeModel> earthQuake) {
+    public EarthQuakeAdapter(Activity context, List<EarthQuakeModel> earthQuake) {
         super(context, 0, earthQuake);
     }
 
@@ -48,9 +49,9 @@ public class EarthQuakeAdapter extends ArrayAdapter<EarthQuakeModel> {
 
     @NonNull
     @Override
-    public View getView(int position, @Nullable View convertView, @NonNull ViewGroup parent) {
+    public View getView(int position,  View convertView,  ViewGroup parent) {
 
-        EarthQuakeModel currentPosition = getItem(position);
+        final EarthQuakeModel currentPosition = getItem(position);
         View itemView = convertView;
         ViewHolder viewHolder;
 
@@ -59,7 +60,8 @@ public class EarthQuakeAdapter extends ArrayAdapter<EarthQuakeModel> {
             itemView = LayoutInflater.from(getContext()).inflate(R.layout.list_item_layout, parent, false);
             viewHolder = new ViewHolder(itemView);
             itemView.setTag(viewHolder);
-        } else {
+        }
+        else {
             viewHolder = (ViewHolder) itemView.getTag();
         }
 
@@ -120,7 +122,7 @@ public class EarthQuakeAdapter extends ArrayAdapter<EarthQuakeModel> {
         return itemView;
     }
 
-    private int getMagnitudeColors(Double magnitude) {
+    private int getMagnitudeColors(double magnitude) {
         int magnitudeColorsResourceId;
         int magnitudeFloor = (int) Math.floor(magnitude);
         switch (magnitudeFloor) {
@@ -161,7 +163,7 @@ public class EarthQuakeAdapter extends ArrayAdapter<EarthQuakeModel> {
     }
 
     //method format double for Magnitude/
-    private String formatMagnitude(Double magnitude) {
+    private String formatMagnitude(double magnitude) {
         DecimalFormat magFormat = new DecimalFormat("0.0");
         return magFormat.format(magnitude);
     }
@@ -170,7 +172,7 @@ public class EarthQuakeAdapter extends ArrayAdapter<EarthQuakeModel> {
      * Return the formatted date string (i.e. "Mar 3, 1984") from a Date object.
      */
     private String formatDate(Date dateObject) {
-        SimpleDateFormat dateFormat = new SimpleDateFormat("dd LLLL yyyy", Locale.ENGLISH);
+        SimpleDateFormat dateFormat = new SimpleDateFormat("LLL dd, yyyy", Locale.ENGLISH);
         return dateFormat.format(dateObject);
     }
 

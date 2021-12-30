@@ -2,34 +2,32 @@ package com.example.earthquakereport;
 
 public class EarthQuakeModel {
 
-private double magnitude;
-    private String location;
-    private long longTime;
-    private String url;
+    private double mMagnitude;
+    private String mLocation;
+    private long mLongTime;
+    private String mUrl;
 
+    public EarthQuakeModel(double magnitude, String location, long longTime, String url) {
+        mMagnitude = magnitude;
+        mLocation = location;
+        mLongTime = longTime;
+        mUrl = url;
+    }
 
     public double getMagnitude() {
-        return magnitude;
+        return mMagnitude;
     }
 
     public long getLongTime() {
-        return longTime;
+        return mLongTime;
     }
 
     public String getLocation() {
-        return location;
+        return mLocation;
     }
 
     public String getUrl() {
-        return url;
-    }
-
-
-    public EarthQuakeModel(double magnitude, String location, long longTime, String url ) {
-        this.magnitude = magnitude;
-        this.location = location;
-        this.longTime = longTime;
-        this.url = url;
+        return mUrl;
     }
 
 }

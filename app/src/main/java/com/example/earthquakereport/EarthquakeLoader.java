@@ -12,7 +12,6 @@ public class EarthquakeLoader extends AsyncTaskLoader<List<EarthQuakeModel>> {
     private static final String LOG_TAG = EarthquakeLoader.class.getName();
 
     private String mUrl;
-
     public EarthquakeLoader(Context context, String url) {
         super(context);
         mUrl = url;

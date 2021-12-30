@@ -111,12 +111,13 @@ public final class QueryUtils {
      * @return
      */
     private static List<EarthQuakeModel> extractEarthquakes(String earthQuakeM) {
-        // Create an empty ArrayList that we can start adding earthquakes to
-        List<EarthQuakeModel> earthquakes = new ArrayList<>();
-
+        // If the JSON string is empty or null, then return early.
         if (TextUtils.isEmpty(earthQuakeM)) {
             return null;
         }
+        // Create an empty ArrayList that we can start adding earthquakes to
+        List<EarthQuakeModel> earthquakesArry = new ArrayList<>();
+
 
 
         // Try to parse the SAMPLE_JSON_RESPONSE. If there's a problem with the way the JSON
@@ -136,7 +137,8 @@ public final class QueryUtils {
                 long longTime = properties.getLong("time");
                 String url = properties.getString("url");
 
-                earthquakes.add(new EarthQuakeModel(magnitude, location, longTime, url));
+                EarthQuakeModel earthQuakeModels = new EarthQuakeModel(magnitude, location, longTime, url);
+                earthquakesArry.add(earthQuakeModels);
 
             }
 
@@ -148,7 +150,7 @@ public final class QueryUtils {
         }
 
         // Return the list of earthquakes
-        return earthquakes;
+        return earthquakesArry;
     }
 
     static URL createUrl(String earthQuakeModelUrl) {

@@ -1,7 +1,6 @@
 package com.example.earthquakereport;
 
 import android.app.LoaderManager;
-import android.app.LoaderManager.LoaderCallbacks;
 import android.content.Context;
 import android.content.Intent;
 import android.content.Loader;
@@ -25,25 +24,23 @@ import androidx.swiperefreshlayout.widget.SwipeRefreshLayout;
 import java.util.ArrayList;
 import java.util.List;
 
-public class MainActivity extends AppCompatActivity implements LoaderCallbacks<List<EarthQuakeModel>> {
+public class MainActivity extends AppCompatActivity
+        implements LoaderManager.LoaderCallbacks<List<EarthQuakeModel>>,
+        SharedPreferences.OnSharedPreferenceChangeListener  {
 
     private static final String LOG_TAG = MainActivity.class.getName();
+    private static final int EARTH_LOADER_ID = 1;
     private EarthQuakeAdapter mAdapter;
     private TextView emptyStateTextview;
     private SwipeRefreshLayout mSwipeRefreshLayout;
-    private View loadingProgresBar;
 
-
-    private static final String USGS_REQUEST_URL4 =
+    private static final String USGS_REQUEST_URL1 =
             "https://earthquake.usgs.gov/fdsnws/event/1/query?format=geojson&orderby=time&minmag=3&limit=100";
-    private static final String USGS_REQUEST_URL =
+    private static final String USGS_REQUEST_URL8 =
             "https://earthquake.usgs.gov/fdsnws/event/1/query";
 
-    private static final String USGS_REQUEST_URL2 =
+    private static final String USGS_REQUEST_URL =
             "https://earthquake.usgs.gov/fdsnws/event/1/query?format=geojson";
-
-    private static final int EARTH_LOADER_ID = 1;
-
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -52,14 +49,18 @@ public class MainActivity extends AppCompatActivity implements LoaderCallbacks<L
 
         // Create a fake list of earthquake locations.
         ListView listView = (ListView) findViewById(R.id.list_in_activity_main);
+
+        //creta empty state textview
+        emptyStateTextview = (TextView) findViewById(R.id.emptyview_text);
+        listView.setEmptyView(emptyStateTextview);
+
         mAdapter = new EarthQuakeAdapter(this, new ArrayList<EarthQuakeModel>());
 
         // Set the adapter on the {@link ListView}
         listView.setAdapter(mAdapter);
 
-        //creta empty state textview
-        emptyStateTextview = (TextView) findViewById(R.id.emptyview_text);
-        listView.setEmptyView(emptyStateTextview);
+        SharedPreferences preferences = PreferenceManager.getDefaultSharedPreferences(this);
+        preferences.registerOnSharedPreferenceChangeListener(this);
 
 //        mSwipeRefreshLayout = (SwipeRefreshLayout) findViewById(R.id.swipe_to_refresh);
 //        mSwipeRefreshLayout.setOnRefreshListener(new SwipeRefreshLayout.OnRefreshListener() {
@@ -79,7 +80,7 @@ public class MainActivity extends AppCompatActivity implements LoaderCallbacks<L
 
         // Get a reference to the ConnectivityManager to check state of network connectivity
         ConnectivityManager connectivityManager = (ConnectivityManager)
-                getSystemService(Context.CONNECTIVITY_SERVICE);
+                this.getSystemService(Context.CONNECTIVITY_SERVICE);
         // Get details on the currently active default data network
         NetworkInfo networkInfo = connectivityManager.getActiveNetworkInfo();
         boolean isConnected = networkInfo != null && networkInfo.isConnectedOrConnecting();
@@ -96,8 +97,8 @@ public class MainActivity extends AppCompatActivity implements LoaderCallbacks<L
             loaderManager.initLoader(EARTH_LOADER_ID, null, this);
         } else {
             // Otherwise, display error
-            loadingProgresBar = findViewById(R.id.progress_bar);
-            loadingProgresBar.setVisibility(View.GONE);
+            View loadingProgrez= findViewById(R.id.progress_bar);
+            loadingProgrez.setVisibility(View.GONE);
 
             // if thrown to empty state display
 //            loadingProgresBar = findViewById(R.id.progress_bar);
@@ -151,8 +152,8 @@ public class MainActivity extends AppCompatActivity implements LoaderCallbacks<L
     @Override
     public void onLoadFinished(Loader<List<EarthQuakeModel>> loader, List<EarthQuakeModel> data) {
         //loading progress_bar first visible on opening
-        loadingProgresBar = findViewById(R.id.progress_bar);
-        loadingProgresBar.setVisibility(View.GONE);
+        View loadingProgresss = findViewById(R.id.progress_bar);
+        loadingProgresss.setVisibility(View.GONE);
         // Clear the adapter of previous earthquake data
         mAdapter.clear();
         emptyStateTextview.setText(R.string.no_earthquake);
@@ -201,7 +202,6 @@ public class MainActivity extends AppCompatActivity implements LoaderCallbacks<L
     @Override
     public boolean onCreateOptionsMenu(Menu menu) {
         getMenuInflater().inflate(R.menu.main, menu);
-        ;
         return true;
     }
 
@@ -215,5 +215,19 @@ public class MainActivity extends AppCompatActivity implements LoaderCallbacks<L
             return true;
         }
         return super.onOptionsItemSelected(item);
+    }
+
+    @Override
+    public void onSharedPreferenceChanged(SharedPreferences sharedPreferences, String key) {
+        if (key.equals(getString(R.string.settings_min_magnitude_key)) ||
+        key.equals(getString(R.string.settings_order_by_key))){
+            mAdapter.clear();
+            emptyStateTextview.setVisibility(View.GONE);
+
+            View loadingProgress = findViewById(R.id.progress_bar);
+            loadingProgress.setVisibility(View.VISIBLE);
+
+            getLoaderManager().restartLoader(EARTH_LOADER_ID, null, this);
+        }
     }
 }
