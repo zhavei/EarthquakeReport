@@ -40,7 +40,7 @@ public class MainActivity extends AppCompatActivity
             "https://earthquake.usgs.gov/fdsnws/event/1/query";
 
     private static final String USGS_REQUEST_URL =
-            "https://earthquake.usgs.gov/fdsnws/event/1/query?format=geojson";
+            "https://earthquake.usgs.gov/fdsnws/event/1/query?format=geojson&limit=100";
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
